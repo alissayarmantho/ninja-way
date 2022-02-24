@@ -49,11 +49,12 @@ class NinjaWayApp extends StatelessWidget {
         body: Stack(
           children: [
             Positioned.fill(
-              bottom: 150,
+              bottom: 130,
               child: GoogleMap(
                 zoomControlsEnabled: false,
                 onMapCreated: mapController.onMapCreated,
                 myLocationEnabled: true,
+                myLocationButtonEnabled: true,
                 initialCameraPosition: CameraPosition(
                   target: mapController.center.value,
                   zoom: 15.0,

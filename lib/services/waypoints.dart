@@ -12,7 +12,6 @@ class WaypointService {
       var response = await BaseApi.get(url: url);
       var jsonString = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        print(Waypoints.fromJson(jsonString));
         return Waypoints.fromJson(jsonString);
       } else {
         return Future.error("Error getting waypoints");

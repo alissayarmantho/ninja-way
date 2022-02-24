@@ -40,8 +40,8 @@ class _MapDraggableScrollSheetState extends State<MapDraggableScrollSheet> {
           bottom: _fabPosition + _fabPositionPadding,
           right: _fabPositionPadding,
           child: FloatingActionButton(
-            child: const Icon(Icons.my_location),
-            onPressed: mapController.refocus,
+            child: const Icon(Icons.start),
+            onPressed: () {},
           ),
         ),
         NotificationListener<DraggableScrollableNotification>(

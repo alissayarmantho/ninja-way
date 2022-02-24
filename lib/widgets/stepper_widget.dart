@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ninja_way/services/waypoints.dart';
 import 'package:ninja_way/widgets/primary_button.dart';
 import 'package:ninja_way/widgets/secondary_button.dart';
 
