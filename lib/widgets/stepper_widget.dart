@@ -15,6 +15,7 @@ class _StepperWidgetState extends State<StepperWidget> {
   @override
   Widget build(BuildContext context) {
     return Stepper(
+      physics: const ClampingScrollPhysics(),
       currentStep: _index,
       controlsBuilder: (BuildContext context, ControlsDetails details) {
         return Row(

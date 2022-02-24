@@ -54,28 +54,47 @@ class _NinjaWayAppState extends State<NinjaWayApp> {
         ),
         body: Stack(
           children: [
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 15.0,
+            Positioned.fill(
+              bottom: 150,
+              child: GoogleMap(
+                onMapCreated: _onMapCreated,
+                myLocationEnabled: true,
+                initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 15.0,
+                ),
               ),
             ),
             DraggableScrollableSheet(
               maxChildSize: 0.6,
               minChildSize: 0.2,
-              initialChildSize: 0.2,
               builder:
                   (BuildContext context, ScrollController scrollController) {
                 return Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
                     ),
-                    child: const StepperWidget());
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 15,
+                        blurRadius: 15,
+                        offset:
+                            const Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      return const StepperWidget();
+                    },
+                  ),
+                );
               },
             ),
           ],
