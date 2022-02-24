@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ninja_way/constants.dart';
 
 void main() => runApp(const MyApp());
 
@@ -22,6 +23,29 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'NunitoSans',
+        textTheme: Theme.of(context).textTheme.apply(
+              fontFamily: 'NunitoSans',
+              fontSizeFactor: 1.5,
+            ),
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
+        primarySwatch: Colors.blue,
+        primaryColor: primaryColor,
+        colorScheme: const ColorScheme(
+            brightness: Brightness.light,
+            primary: primaryColor,
+            onPrimary: Colors.white,
+            secondary: primaryLightColor,
+            onSecondary: Colors.black,
+            error: Colors.black,
+            onError: Colors.white,
+            background: Colors.white,
+            onBackground: Colors.black,
+            surface: Colors.white,
+            onSurface: Colors.black),
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Ninja Way'),
