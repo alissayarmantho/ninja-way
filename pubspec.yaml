@@ -124,11 +124,6 @@ flutter:
         - asset: fonts/NunitoSans-Regular.ttf
         - asset: fonts/NunitoSans-Italic.ttf
           style: italic
-        - asset: fonts/NunitoSans-Thin.ttf
-          weight: 100
-        - asset: fonts/NunitoSans-ThinItalic.ttf
-          weight: 100
-          style: italic
         - asset: fonts/NunitoSans-ExtraLight.ttf
           weight: 200
         - asset: fonts/NunitoSans-ExtraLightItalic.ttf
@@ -138,11 +133,6 @@ flutter:
           weight: 300
         - asset: fonts/NunitoSans-LightItalic.ttf
           weight: 300
-          style: italic
-        - asset: fonts/NunitoSans-Medium.ttf
-          weight: 500
-        - asset: fonts/NunitoSans-MediumItalic.ttf
-          weight: 500
           style: italic
         - asset: fonts/NunitoSans-SemiBold.ttf
           weight: 600

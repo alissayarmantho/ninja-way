@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ninja_way/constants.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const NinjaWayApp());
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class NinjaWayApp extends StatefulWidget {
+  const NinjaWayApp({Key? key}) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _NinjaWayAppState createState() => _NinjaWayAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _NinjaWayAppState extends State<NinjaWayApp> {
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(1.30822042654265, 103.773315219931);
@@ -23,15 +23,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'NunitoSans',
         textTheme: Theme.of(context).textTheme.apply(
               fontFamily: 'NunitoSans',
-              fontSizeFactor: 1.5,
+              fontSizeFactor: 1,
             ),
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
-        primarySwatch: Colors.blue,
         primaryColor: primaryColor,
         colorScheme: const ColorScheme(
             brightness: Brightness.light,
@@ -49,13 +49,13 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Ninja Way'),
-          backgroundColor: Colors.green[700],
+          backgroundColor: primaryColor,
         ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
             target: _center,
-            zoom: 50.0,
+            zoom: 15.0,
           ),
         ),
       ),
