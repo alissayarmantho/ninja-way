@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ninja_way/constants.dart';
-import 'package:ninja_way/widgets/stepper_widget.dart';
+import 'package:ninja_way/controller/map_controller.dart';
+import 'package:ninja_way/controller/waypoints_controller.dart';
+import 'package:ninja_way/widgets/map_draggable_scroll_sheet.dart';
 
 void main() => runApp(const NinjaWayApp());
 
-class NinjaWayApp extends StatefulWidget {
+class NinjaWayApp extends StatelessWidget {
   const NinjaWayApp({Key? key}) : super(key: key);
 
   @override
-  _NinjaWayAppState createState() => _NinjaWayAppState();
-}
-
-class _NinjaWayAppState extends State<NinjaWayApp> {
-  late GoogleMapController mapController;
-
-  final LatLng _center = const LatLng(1.30822042654265, 103.773315219931);
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final MapController mapController = Get.put<MapController>(MapController());
+    final WaypointController waypointController =
+        Get.put<WaypointController>(WaypointController());
+    waypointController.fetchWaypoints();
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'NunitoSans',
@@ -57,46 +51,16 @@ class _NinjaWayAppState extends State<NinjaWayApp> {
             Positioned.fill(
               bottom: 150,
               child: GoogleMap(
-                onMapCreated: _onMapCreated,
+                zoomControlsEnabled: false,
+                onMapCreated: mapController.onMapCreated,
                 myLocationEnabled: true,
                 initialCameraPosition: CameraPosition(
-                  target: _center,
+                  target: mapController.center.value,
                   zoom: 15.0,
                 ),
               ),
             ),
-            DraggableScrollableSheet(
-              maxChildSize: 0.6,
-              minChildSize: 0.2,
-              builder:
-                  (BuildContext context, ScrollController scrollController) {
-                return Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 15,
-                        blurRadius: 15,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: 1,
-                    itemBuilder: (BuildContext context, int index) {
-                      return const StepperWidget();
-                    },
-                  ),
-                );
-              },
-            ),
+            const MapDraggableScrollSheet(),
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ninja_way/services/waypoints.dart';
 import 'package:ninja_way/widgets/primary_button.dart';
 import 'package:ninja_way/widgets/secondary_button.dart';
 
@@ -23,7 +24,7 @@ class _StepperWidgetState extends State<StepperWidget> {
             PrimaryButton(
               key: UniqueKey(),
               text: "Navigation",
-              press: () {},
+              press: () async {},
               widthRatio: 0.30,
               marginLeft: 0,
               marginRight: 5,
@@ -37,7 +38,7 @@ class _StepperWidgetState extends State<StepperWidget> {
               marginRight: 5,
             ),
             TextButton(
-              onPressed: details.onStepCancel,
+              onPressed: _index > 0 ? details.onStepCancel : null,
               child: const Text('Back'),
             ),
           ],
