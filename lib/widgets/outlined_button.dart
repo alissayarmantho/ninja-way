@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ninja_way/constants.dart';
 
-class SecondaryButton extends StatelessWidget {
+class LinedButton extends StatelessWidget {
   final String text;
   final VoidCallback press;
   final Color color, borderColor, textColor;
@@ -9,7 +9,7 @@ class SecondaryButton extends StatelessWidget {
   final double widthRatio;
   final double height;
 
-  const SecondaryButton({
+  const LinedButton({
     required Key key,
     required this.text,
     required this.press,
@@ -25,7 +25,7 @@ class SecondaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       width: size.width * widthRatio,
       height: height,
       child: ClipRRect(
@@ -36,7 +36,7 @@ class SecondaryButton extends StatelessWidget {
               backgroundColor: color,
               side: BorderSide(color: borderColor, width: 5),
               padding:
-                  const EdgeInsets.symmetric(vertical: 20, horizontal: 40)),
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
           onPressed: isLoading ? null : press,
           child: isLoading
               ? const Center(child: CircularProgressIndicator())

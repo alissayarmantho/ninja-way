@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:ninja_way/constants.dart';
+import 'package:ninja_way/widgets/primary_button.dart';
 
 class SecondaryButton extends StatelessWidget {
   final String text;
   final VoidCallback press;
   final Color color, textColor, loadingSpinnerColor;
-  final double widthRatio;
+  final double widthRatio, marginLeft, marginRight, marginTop, marginBottom;
   final bool isLoading;
 
   const SecondaryButton({
@@ -13,6 +14,10 @@ class SecondaryButton extends StatelessWidget {
     required this.text,
     required this.press,
     required this.widthRatio,
+    this.marginLeft = 10,
+    this.marginRight = 10,
+    this.marginTop = 10,
+    this.marginBottom = 10,
     this.isLoading = false,
     this.color = primaryColor,
     this.textColor = Colors.white,
@@ -21,7 +26,7 @@ class SecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SecondaryButton(
+    return PrimaryButton(
       key: UniqueKey(),
       text: text,
       press: press,
@@ -29,6 +34,10 @@ class SecondaryButton extends StatelessWidget {
       color: primaryLightColor,
       textColor: Colors.black,
       loadingSpinnerColor: Colors.black,
+      marginBottom: marginBottom,
+      marginLeft: marginLeft,
+      marginRight: marginRight,
+      marginTop: marginTop,
     );
   }
 }

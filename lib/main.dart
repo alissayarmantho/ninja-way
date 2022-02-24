@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ninja_way/constants.dart';
+import 'package:ninja_way/widgets/stepper_widget.dart';
 
 void main() => runApp(const NinjaWayApp());
 
@@ -51,12 +52,33 @@ class _NinjaWayAppState extends State<NinjaWayApp> {
           title: const Text('Ninja Way'),
           backgroundColor: primaryColor,
         ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 15.0,
-          ),
+        body: Stack(
+          children: [
+            GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 15.0,
+              ),
+            ),
+            DraggableScrollableSheet(
+              maxChildSize: 0.6,
+              minChildSize: 0.2,
+              initialChildSize: 0.2,
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
+                return Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                    ),
+                    child: const StepperWidget());
+              },
+            ),
+          ],
         ),
       ),
     );

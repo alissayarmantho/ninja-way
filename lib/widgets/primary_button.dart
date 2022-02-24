@@ -5,7 +5,8 @@ class PrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback press;
   final Color color, textColor, loadingSpinnerColor;
-  final double widthRatio;
+  final double widthRatio, marginLeft, marginRight, marginTop, marginBottom;
+
   final bool isLoading;
 
   const PrimaryButton({
@@ -13,6 +14,10 @@ class PrimaryButton extends StatelessWidget {
     required this.text,
     required this.press,
     required this.widthRatio,
+    this.marginLeft = 10,
+    this.marginRight = 10,
+    this.marginTop = 10,
+    this.marginBottom = 10,
     this.isLoading = false,
     this.color = primaryColor,
     this.textColor = Colors.white,
@@ -23,7 +28,8 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin:
+          EdgeInsets.fromLTRB(marginLeft, marginTop, marginRight, marginBottom),
       width: size.width * widthRatio,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
@@ -38,7 +44,7 @@ class PrimaryButton extends StatelessWidget {
                 },
               ),
               padding: MaterialStateProperty.all(
-                  const EdgeInsets.symmetric(vertical: 20, horizontal: 40))),
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 20))),
           onPressed: isLoading ? null : press,
           child: isLoading
               ? CircularProgressIndicator(color: loadingSpinnerColor)
