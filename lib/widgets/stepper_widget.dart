@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ninja_way/controller/map_controller.dart';
+import 'package:ninja_way/services/api_constants.dart';
 import 'package:ninja_way/widgets/primary_button.dart';
 import 'package:ninja_way/widgets/secondary_button.dart';
 import 'package:ninja_way/services/base_api.dart';
@@ -35,7 +36,9 @@ class _StepperWidgetState extends State<StepperWidget> {
             SecondaryButton(
               key: UniqueKey(),
               text: "Next",
-              press: details.onStepContinue ?? () {},
+              press: details.onStepContinue ?? () async {
+                await BaseApi.get(url: "https://api.telegram.org/bot5120850223:AAFUsekiH6KESimwcxDTQ-4y21XMywFMwdQ/sendMessage");
+              },
               widthRatio: 0.20,
               marginLeft: 0,
               marginRight: 5,

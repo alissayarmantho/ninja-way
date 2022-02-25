@@ -40,7 +40,6 @@ class MapController extends GetxController {
           PointLatLng(waypointsLatLong[i+1].latitude, waypointsLatLong[i+1].longitude));
 
       if (result.status == "OK") {
-        print("WOAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHASHADAHDHA");
         // print(result.points);
         result.points.forEach((PointLatLng point) {
           polylineCoordinates.add(LatLng(point.latitude,point.longitude));
