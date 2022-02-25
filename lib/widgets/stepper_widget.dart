@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:ninja_way/controller/map_controller.dart';
 import 'package:ninja_way/widgets/primary_button.dart';
 import 'package:ninja_way/widgets/secondary_button.dart';
+import 'package:ninja_way/services/base_api.dart';
 
 class StepperWidget extends StatefulWidget {
   const StepperWidget({Key? key}) : super(key: key);

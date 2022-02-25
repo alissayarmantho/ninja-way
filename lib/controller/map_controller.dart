@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../constants.dart';
@@ -16,6 +17,9 @@ class MapController extends GetxController {
   var currLong = 0.00.obs;
   var currAddress = "".obs;
   var isLoading = false.obs;
+  List<LatLng> polylineCoordinates = [];
+  Set<Polyline> polylines = Set<Polyline>();
+  var currentStep = 0;
 
   var waypoints = data[routeId];
   var markers = Set<Marker>.from({}).obs;
@@ -23,8 +27,36 @@ class MapController extends GetxController {
   void onMapCreated(GoogleMapController controller) {
     isLoading.value = true;
     mapController = controller;
+    setPolyLines();
     initialCameraPosition = CameraPosition(target: center.value, zoom: 15);
     isLoading.value = false;
+  }
+
+  void setPolyLines() async {
+    for (var i = 0; i < waypointsLatLong.length - 1; i++) {
+      PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
+          "AIzaSyDv6v-bHlUOANCoX01U6wVh9y5UZNtskG4",
+          PointLatLng(waypointsLatLong[i].latitude, waypointsLatLong[i].longitude),
+          PointLatLng(waypointsLatLong[i+1].latitude, waypointsLatLong[i+1].longitude));
+
+      if (result.status == "OK") {
+        print("WOAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHASHADAHDHA");
+        // print(result.points);
+        result.points.forEach((PointLatLng point) {
+          polylineCoordinates.add(LatLng(point.latitude,point.longitude));
+        });
+
+        polylines.add(
+            Polyline(
+                width: 10,
+                polylineId: PolylineId('polyLine'),
+                color: Color(0xFF08A5CB),
+                points: polylineCoordinates
+            )
+        );
+      }
+    }
+
   }
 
   Future<void> initialize() async {
