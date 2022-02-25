@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ninja_way/controller/map_controller.dart';
-import 'package:ninja_way/services/api_constants.dart';
+import 'package:ninja_way/controller/url_controller.dart';
 import 'package:ninja_way/widgets/primary_button.dart';
 import 'package:ninja_way/widgets/secondary_button.dart';
-import 'package:ninja_way/services/base_api.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StepperWidget extends StatefulWidget {
   const StepperWidget({Key? key}) : super(key: key);
@@ -28,7 +29,21 @@ class _StepperWidgetState extends State<StepperWidget> {
             PrimaryButton(
               key: UniqueKey(),
               text: "Navigation",
-              press: () async {},
+              press: () async {
+                LatLng ori = mapController.waypointsLatLong[_index];
+                var destIndex = _index + 1;
+                if (_index + 1 >= mapController.waypointsLatLong.length) {
+                  destIndex = 0;
+                }
+                LatLng dest = mapController.waypointsLatLong[destIndex];
+                double oriLat = ori.latitude;
+                double oriLong = ori.longitude;
+                double destLat = dest.latitude;
+                double destLong = dest.longitude;
+                var url =
+                    'https://www.google.com/maps/dir/?api=1&origin=$oriLat,$oriLong&destination=$destLat,$destLong&travelmode=driving&dir_action=navigate';
+                launch(url);
+              },
               widthRatio: 0.30,
               marginLeft: 0,
               marginRight: 5,
@@ -36,9 +51,12 @@ class _StepperWidgetState extends State<StepperWidget> {
             SecondaryButton(
               key: UniqueKey(),
               text: "Next",
-              press: details.onStepContinue ?? () async {
-                await BaseApi.get(url: "https://api.telegram.org/bot5120850223:AAFUsekiH6KESimwcxDTQ-4y21XMywFMwdQ/sendMessage");
-              },
+              press: details.onStepContinue ??
+                  () async {
+                    await BaseApi.get(
+                        url:
+                            "https://api.telegram.org/bot5120850223:AAFUsekiH6KESimwcxDTQ-4y21XMywFMwdQ/sendMessage");
+                  },
               widthRatio: 0.20,
               marginLeft: 0,
               marginRight: 5,
