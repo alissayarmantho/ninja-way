@@ -16,6 +16,7 @@ class _StepperWidgetState extends State<StepperWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final MapController mapController = Get.find<MapController>();
     return Stepper(
       physics: const ClampingScrollPhysics(),
       currentStep: _index,
@@ -25,9 +26,7 @@ class _StepperWidgetState extends State<StepperWidget> {
             PrimaryButton(
               key: UniqueKey(),
               text: "Navigation",
-              press: () async {
-                (Get.find<MapController>().moveCameraToFirstWaypoint());
-              },
+              press: () async {},
               widthRatio: 0.30,
               marginLeft: 0,
               marginRight: 5,
@@ -66,38 +65,11 @@ class _StepperWidgetState extends State<StepperWidget> {
           _index = index;
         });
       },
-      steps: <Step>[
-        Step(
-          title: const Text('Step 1 title'),
-          content: Container(
-              alignment: Alignment.centerLeft,
-              child: const Text('Content for Step 1')),
-        ),
-        const Step(
-          title: Text('Step 2 title'),
-          content: Text('Content for Step 2'),
-        ),
-        const Step(
-          title: Text('Step 2 title'),
-          content: Text('Content for Step 2'),
-        ),
-        const Step(
-          title: Text('Step 2 title'),
-          content: Text('Content for Step 2'),
-        ),
-        const Step(
-          title: Text('Step 2 title'),
-          content: Text('Content for Step 2'),
-        ),
-        const Step(
-          title: Text('Step 2 title'),
-          content: Text('Content for Step 2'),
-        ),
-        const Step(
-          title: Text('Step 2 title'),
-          content: Text('Content for Step 2'),
-        ),
-      ],
+      steps: mapController.waypointsAddress.map((String item) {
+        return Step(
+            title: Text(item),
+            content: Container(alignment: Alignment.center, child: Text(item)));
+      }).toList(),
     );
   }
 }

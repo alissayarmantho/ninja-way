@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.1
   geolocator: ^8.2.0
   geocoding: ^2.0.2
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_test:
