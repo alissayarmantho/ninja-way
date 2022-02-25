@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ninja_way/controller/map_controller.dart';
-import 'package:ninja_way/controller/url_controller.dart';
+import 'package:ninja_way/services/base_api.dart';
 import 'package:ninja_way/widgets/primary_button.dart';
 import 'package:ninja_way/widgets/secondary_button.dart';
 import 'package:url_launcher/url_launcher.dart';
