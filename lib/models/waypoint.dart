@@ -28,11 +28,11 @@ class DeliveryPoint {
     required this.zoneId,
   });
 
-  String driverId;
-  String latitude;
-  String longitude;
-  String routeId;
-  String zoneId;
+  int driverId;
+  double latitude;
+  double longitude;
+  int routeId;
+  int zoneId;
 
   factory DeliveryPoint.fromRawJson(String str) =>
       DeliveryPoint.fromJson(json.decode(str));

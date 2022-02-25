@@ -33,7 +33,7 @@ class _MapDraggableScrollSheetState extends State<MapDraggableScrollSheet> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final MapController mapController = Get.put<MapController>(MapController());
+    final MapController mapController = Get.find<MapController>();
     return Stack(
       children: [
         Positioned(

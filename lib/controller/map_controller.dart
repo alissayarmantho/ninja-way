@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../constants.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -10,16 +9,63 @@ class MapController extends GetxController {
   late GoogleMapController mapController;
   late CameraPosition initialCameraPosition;
   late List<String> postalCodes;
+  var waypointsLatLong = List<LatLng>.from([]).obs;
+  var waypointsAddress = List<String>.from([]).obs;
   var center = const LatLng(1.30822042654265, 103.773315219931).obs;
   var currLat = 0.00.obs;
   var currLong = 0.00.obs;
+  var currAddress = "".obs;
+  var isLoading = false.obs;
 
   var waypoints = data[routeId];
+  var markers = Set<Marker>.from({}).obs;
 
   void onMapCreated(GoogleMapController controller) {
+    isLoading.value = true;
     mapController = controller;
     initialCameraPosition = CameraPosition(target: center.value, zoom: 15);
+    isLoading.value = false;
+  }
+
+  Future<void> initialize() async {
+    isLoading.value = true;
     postalCodes = List.from(waypoints!.keys);
+    getLatLongForPostalCodesFromData();
+    await getAddressForPostalCodesLatLong();
+    populateWaypointsMarkers();
+    isLoading.value = false;
+  }
+
+  void moveCameraToFirstWaypoint() async {
+    mapController.animateCamera(
+      CameraUpdate.newLatLng(waypointsLatLong[0]),
+    );
+  }
+  // Future<void> getLatLongForPostalCodes() async {
+  //   for (var i in postalCodes) {
+  //     var location = await getCoordinatesFromPostalCode(i);
+  //     waypointsLatLong.add(location);
+  //   }
+  // }
+
+  void getLatLongForPostalCodesFromData() async {
+    for (var i in postalCodes) {
+      var location = getCoordinateFromPostalData(i);
+      waypointsLatLong.add(location);
+    }
+  }
+
+  LatLng getCoordinateFromPostalData(String postalCode) {
+    var location = waypoints![postalCode]![0];
+    dynamic deliveryPoint = location;
+    return LatLng(deliveryPoint["latitude"], deliveryPoint["longitude"]);
+  }
+
+  Future<void> getAddressForPostalCodesLatLong() async {
+    for (var i in waypointsLatLong) {
+      var address = await getAddress(i.latitude, i.longitude);
+      waypointsAddress.add(address);
+    }
   }
 
   Future<Location> getCoordinatesFromPostalCode(String postalCode) async {
@@ -49,6 +95,18 @@ class MapController extends GetxController {
     return "";
   }
 
+  void populateWaypointsMarkers() {
+    for (var i in waypointsLatLong) {
+      String coordinates =
+          "(" + i.latitude.toString() + ", " + i.longitude.toString() + ")";
+      var marker = Marker(
+          icon: BitmapDescriptor.defaultMarker,
+          markerId: MarkerId(coordinates),
+          position: LatLng(i.latitude, i.longitude));
+      markers.add(marker);
+    }
+  }
+
   void getCurrentLocation() async {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) async {
@@ -63,7 +121,8 @@ class MapController extends GetxController {
           ),
         ),
       );
-      // await _getAddress();
+      currAddress.value =
+          await getAddress(position.latitude, position.longitude);
     }).catchError((err) {
       Get.snackbar(
         "Error Getting Current Location",

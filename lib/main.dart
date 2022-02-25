@@ -16,6 +16,10 @@ class NinjaWayApp extends StatelessWidget {
     final MapController mapController = Get.put<MapController>(MapController());
     final WaypointController waypointController =
         Get.put<WaypointController>(WaypointController());
+    mapController.initialize();
+    Future.delayed(const Duration(seconds: 3), () {
+      mapController.moveCameraToFirstWaypoint();
+    });
     waypointController.fetchWaypoints();
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
@@ -46,23 +50,28 @@ class NinjaWayApp extends StatelessWidget {
           title: const Text('Ninja Way'),
           backgroundColor: primaryColor,
         ),
-        body: Stack(
-          children: [
-            Positioned.fill(
-              bottom: 130,
-              child: GoogleMap(
-                zoomControlsEnabled: false,
-                onMapCreated: mapController.onMapCreated,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: true,
-                initialCameraPosition: CameraPosition(
-                  target: mapController.center.value,
-                  zoom: 15.0,
+        body: Obx(
+          () => mapController.isLoading.value
+              ? Center(child: CircularProgressIndicator(key: UniqueKey()))
+              : Stack(
+                  children: [
+                    Positioned.fill(
+                      bottom: 130,
+                      child: GoogleMap(
+                        zoomControlsEnabled: false,
+                        markers: Set<Marker>.from(mapController.markers),
+                        onMapCreated: mapController.onMapCreated,
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        initialCameraPosition: CameraPosition(
+                          target: mapController.center.value,
+                          zoom: 15.0,
+                        ),
+                      ),
+                    ),
+                    const MapDraggableScrollSheet(),
+                  ],
                 ),
-              ),
-            ),
-            const MapDraggableScrollSheet(),
-          ],
         ),
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ninja_way/controller/map_controller.dart';
 import 'package:ninja_way/widgets/primary_button.dart';
 import 'package:ninja_way/widgets/secondary_button.dart';
 
@@ -23,7 +25,9 @@ class _StepperWidgetState extends State<StepperWidget> {
             PrimaryButton(
               key: UniqueKey(),
               text: "Navigation",
-              press: () async {},
+              press: () async {
+                (Get.find<MapController>().moveCameraToFirstWaypoint());
+              },
               widthRatio: 0.30,
               marginLeft: 0,
               marginRight: 5,
