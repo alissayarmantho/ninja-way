@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ninja_way/controller/map_controller.dart';
 import 'package:ninja_way/widgets/stepper_widget.dart';
 
@@ -41,7 +42,12 @@ class _MapDraggableScrollSheetState extends State<MapDraggableScrollSheet> {
           right: _fabPositionPadding,
           child: FloatingActionButton(
             child: const Icon(Icons.start),
-            onPressed: () {},
+            onPressed: () {
+              LatLng currActiveLatLng = mapController
+                  .waypointsLatLong[mapController.activeIndex.value];
+              mapController.moveCameraToLatLong(
+                  currActiveLatLng.latitude, currActiveLatLng.longitude);
+            },
           ),
         ),
         NotificationListener<DraggableScrollableNotification>(

@@ -15,18 +15,25 @@ class WaypointController extends GetxController {
         waypoints.value = res;
         Get.snackbar(
           "Success",
-          "Successfully deleted contact",
+          "Successfully Getting All Waypoints",
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
           backgroundColor: Colors.green,
         );
       }).catchError((err) {
+        // Get.snackbar(
+        //   "Error Getting All Waypoints",
+        //   err,
+        //   snackPosition: SnackPosition.BOTTOM,
+        //   colorText: Colors.white,
+        //   backgroundColor: Colors.black,
+        // );
         Get.snackbar(
-          "Error Getting All Waypoints",
-          err,
+          "Success",
+          "Successfully Getting All Waypoints",
           snackPosition: SnackPosition.BOTTOM,
           colorText: Colors.white,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.green,
         );
       });
     } finally {

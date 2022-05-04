@@ -30,9 +30,17 @@ class _StepperWidgetState extends State<StepperWidget> {
               key: UniqueKey(),
               text: "Navigation",
               press: () async {
-                LatLng ori = mapController.waypointsLatLong[_index];
+                var oriIndex = _index - 1;
+                LatLng ori;
+                if (oriIndex < 0) {
+                  await mapController.getCurrentLocation();
+                  ori = LatLng(mapController.currLat.value,
+                      mapController.currLong.value);
+                } else {
+                  ori = mapController.waypointsLatLong[_index];
+                }
                 var destIndex = _index + 1;
-                if (_index + 1 >= mapController.waypointsLatLong.length) {
+                if (destIndex >= mapController.waypointsLatLong.length) {
                   destIndex = 0;
                 }
                 LatLng dest = mapController.waypointsLatLong[destIndex];
@@ -50,13 +58,12 @@ class _StepperWidgetState extends State<StepperWidget> {
             ),
             SecondaryButton(
               key: UniqueKey(),
-              text: "Next",
-              press: details.onStepContinue ??
-                  () async {
-                    await BaseApi.get(
-                        url:
-                            "https://api.telegram.org/bot5120850223:AAFUsekiH6KESimwcxDTQ-4y21XMywFMwdQ/sendMessage");
-                  },
+              text: "Notify",
+              press: () async {
+                await BaseApi.get(
+                    url:
+                        "https://us-central1-ninja-van-terminator.cloudfunctions.net/sendUpdateToCustomer");
+              },
               widthRatio: 0.20,
               marginLeft: 0,
               marginRight: 5,
@@ -72,6 +79,7 @@ class _StepperWidgetState extends State<StepperWidget> {
         if (_index > 0) {
           setState(() {
             _index -= 1;
+            mapController.setActiveIndex(_index);
           });
         }
       },
@@ -79,12 +87,14 @@ class _StepperWidgetState extends State<StepperWidget> {
         if (_index <= 0) {
           setState(() {
             _index += 1;
+            mapController.setActiveIndex(_index);
           });
         }
       },
       onStepTapped: (int index) {
         setState(() {
           _index = index;
+          mapController.setActiveIndex(index);
         });
       },
       steps: mapController.waypointsAddress.map((String item) {

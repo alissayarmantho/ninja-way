@@ -18,11 +18,15 @@ class MapController extends GetxController {
   var currAddress = "".obs;
   var isLoading = false.obs;
   List<LatLng> polylineCoordinates = [];
-  Set<Polyline> polylines = Set<Polyline>();
+  var polylines = Set<Polyline>.from({}).obs;
   var currentStep = 0;
-
   var waypoints = data[routeId];
   var markers = Set<Marker>.from({}).obs;
+  var activeIndex = 0.obs;
+
+  void setActiveIndex(int value) {
+    activeIndex.value = value;
+  }
 
   void onMapCreated(GoogleMapController controller) {
     isLoading.value = true;
@@ -36,26 +40,23 @@ class MapController extends GetxController {
     for (var i = 0; i < waypointsLatLong.length - 1; i++) {
       PolylineResult result = await PolylinePoints().getRouteBetweenCoordinates(
           "AIzaSyDv6v-bHlUOANCoX01U6wVh9y5UZNtskG4",
-          PointLatLng(waypointsLatLong[i].latitude, waypointsLatLong[i].longitude),
-          PointLatLng(waypointsLatLong[i+1].latitude, waypointsLatLong[i+1].longitude));
+          PointLatLng(
+              waypointsLatLong[i].latitude, waypointsLatLong[i].longitude),
+          PointLatLng(waypointsLatLong[i + 1].latitude,
+              waypointsLatLong[i + 1].longitude));
 
       if (result.status == "OK") {
-        // print(result.points);
-        result.points.forEach((PointLatLng point) {
-          polylineCoordinates.add(LatLng(point.latitude,point.longitude));
-        });
+        for (var point in result.points) {
+          polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        }
 
-        polylines.add(
-            Polyline(
-                width: 10,
-                polylineId: PolylineId('polyLine'),
-                color: Color(0xFF08A5CB),
-                points: polylineCoordinates
-            )
-        );
+        polylines.add(Polyline(
+            width: 10,
+            polylineId: const PolylineId('polyLine'),
+            color: primaryLightColor,
+            points: polylineCoordinates));
       }
     }
-
   }
 
   Future<void> initialize() async {
@@ -72,18 +73,18 @@ class MapController extends GetxController {
       CameraUpdate.newLatLng(waypointsLatLong[0]),
     );
   }
-  // Future<void> getLatLongForPostalCodes() async {
-  //   for (var i in postalCodes) {
-  //     var location = await getCoordinatesFromPostalCode(i);
-  //     waypointsLatLong.add(location);
-  //   }
-  // }
 
   void getLatLongForPostalCodesFromData() async {
     for (var i in postalCodes) {
       var location = getCoordinateFromPostalData(i);
       waypointsLatLong.add(location);
     }
+  }
+
+  void moveCameraToLatLong(double lat, double long) {
+    mapController.animateCamera(
+      CameraUpdate.newLatLng(waypointsLatLong[0]),
+    );
   }
 
   LatLng getCoordinateFromPostalData(String postalCode) {
@@ -138,7 +139,7 @@ class MapController extends GetxController {
     }
   }
 
-  void getCurrentLocation() async {
+  Future<LatLng> getCurrentLocation() async {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) async {
       currLat.value = position.latitude;
@@ -154,14 +155,16 @@ class MapController extends GetxController {
       );
       currAddress.value =
           await getAddress(position.latitude, position.longitude);
+      return LatLng(position.latitude, position.longitude);
     }).catchError((err) {
       Get.snackbar(
         "Error Getting Current Location",
-        err,
+        err.toString(),
         snackPosition: SnackPosition.BOTTOM,
         colorText: Colors.white,
         backgroundColor: Colors.black,
       );
     });
+    return center.value;
   }
 }

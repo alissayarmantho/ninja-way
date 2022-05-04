@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ninja_way/constants.dart';
@@ -14,8 +13,6 @@ class NinjaWayApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     final MapController mapController = Get.put<MapController>(MapController());
     final WaypointController waypointController =
         Get.put<WaypointController>(WaypointController());
@@ -63,7 +60,7 @@ class NinjaWayApp extends StatelessWidget {
                       child: GoogleMap(
                         zoomControlsEnabled: false,
                         markers: Set<Marker>.from(mapController.markers),
-                        polylines: mapController.polylines,
+                        polylines: Set<Polyline>.from(mapController.polylines),
                         onMapCreated: mapController.onMapCreated,
                         myLocationEnabled: true,
                         myLocationButtonEnabled: true,
